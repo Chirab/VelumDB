@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	
+	"VelumnDB/internal/core"
 )
 
 func main() {
-	fmt.Println("Velum db is running")
-
+	c := &core.C{}
+	c.TextInit()
+	c.Core()
 }
