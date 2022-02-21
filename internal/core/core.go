@@ -14,7 +14,6 @@ type C struct {
 type CI interface {
 	Core()
 	TextInit()
-
 }
 
 /*
@@ -22,9 +21,13 @@ type CI interface {
 */
 func (c *C) TextInit() {
 	fmt.Println("VelumDB v.0.1")
-	fmt.Println("By Glio")
-	fmt.Println()
-	fmt.Println()
+	fmt.Println("Enter .help for usage hints.")
+	fmt.Println("By Glio.")
+	fmt.Println("\n")
+}
+
+func (c *C) Help() {
+	fmt.Println("helpkfozkopfzeofze")
 }
 
 func (c *C) Core() {
@@ -33,7 +36,7 @@ func (c *C) Core() {
 
 func (c *C) readCommand() {
 	for {
-		fmt.Print("> ")
+		fmt.Print(">> ")
 		scanner := bufio.NewReader(os.Stdin)
 		input, err := scanner.ReadString('\n')
 		if err != nil {
@@ -54,6 +57,8 @@ func (c *C) checkCommand() {
 	switch c.Command {
 	case "exit":
 		os.Exit(84)
+	case "help":
+		c.Help()
 	case "create":
 		fmt.Println("Creating Database")
 	default:
