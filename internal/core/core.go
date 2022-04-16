@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"syscall"
 )
 
 type C struct {
@@ -16,9 +17,6 @@ type CI interface {
 	TextInit()
 }
 
-/*
-	Print Text when launching the core
-*/
 func (c *C) TextInit() {
 	fmt.Println("VelumDB v.0.1")
 	fmt.Println("Enter .help for usage hints.")
@@ -31,6 +29,7 @@ func (c *C) Help() {
 }
 
 func (c *C) Core() {
+	c.checkSize()
 	c.readCommand()
 }
 
@@ -46,7 +45,6 @@ func (c *C) readCommand() {
 		// remove the delimeter from the string
 		input = strings.TrimSuffix(input, "\n")
 		c.Command = strings.ToLower(input)
-		//check if inputt is null so the default case on the switch isnt reached out
 		if input != "" {
 			c.checkCommand()
 		}
@@ -64,4 +62,23 @@ func (c *C) checkCommand() {
 	default:
 		fmt.Println("Unrecognized command")
 	}
+}
+
+const (
+	B  = 1
+	KB = 1024 * B
+	MB = 1024 * KB
+	GB = 1024 * MB
+)
+
+
+func (c *C) checkSize() {
+	fs := syscall.Statfs_t{}
+	err := syscall.Statfs("/", &fs)
+	if err != nil {
+		return
+	}
+	t := fs.Bfree * uint64(fs.Bsize)
+	test := float64(t)/float64(GB)
+	fmt.Println(test)
 }
